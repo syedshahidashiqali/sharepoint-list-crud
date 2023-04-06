@@ -96,6 +96,11 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
     return Version.parse('1.0');
   }
 
+  // change the default property pane reactive behavior to non-reactive
+  protected get disableReactivePropertyChanges(): boolean {
+    return true;
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [

@@ -8,4 +8,5 @@ export interface IHelloWorldProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
+  siteName: string;
 }

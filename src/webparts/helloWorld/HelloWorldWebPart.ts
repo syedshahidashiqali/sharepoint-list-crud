@@ -12,9 +12,9 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'HelloWorldWebPartStrings';
-import { SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
 import HelloWorld from './components/HelloWorld';
 import { IHelloWorldProps } from './components/IHelloWorldProps';
+import { getSP } from "./pnpjsConfig";
 
 export interface IHelloWorldWebPartProps {
   description: string;
@@ -22,7 +22,6 @@ export interface IHelloWorldWebPartProps {
   test1: boolean;
   test2: string;
   test3: boolean;
-  listData: any;
 }
 
 export interface ISPLists {
@@ -36,21 +35,10 @@ export interface ISPList {
 
 export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
 
-  private _getListData(): Promise<ISPLists> {
-    return this.context.spHttpClient.get(`${this.context.pageContext.web.absoluteUrl}/_api/web/lists?$filter=Hidden eq false`, SPHttpClient.configurations.v1)
-      .then((response: SPHttpClientResponse) => {
-        return response.json();
-      })
-      .catch((err) => console.log(err));
-  }
-
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
   public render(): void {
-    const _listData: Promise<any> = this._getListData()
-      .then(response => response.value)
-      .catch((err) => console.log(err));
 
     const element: React.ReactElement<IHelloWorldProps> = React.createElement(
       HelloWorld,
@@ -65,14 +53,20 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
         siteName: this.context.pageContext.web.title,
-        listData: _listData
+        context: this.context
       }
     );
 
     ReactDom.render(element, this.domElement);
   }
 
-  protected onInit(): Promise<void> {
+  protected async onInit(): Promise<void> {
+    await super.onInit();
+
+    //Initialize our _sp object that we can then use in other packages without having to pass around the context.
+    // Check out pnpjsConfig.ts for an example of a project setup file.
+    getSP(this.context);
+
     return this._getEnvironmentMessage().then(message => {
       this._environmentMessage = message;
     });

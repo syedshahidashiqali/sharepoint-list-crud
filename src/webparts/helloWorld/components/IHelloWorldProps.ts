@@ -1,3 +1,5 @@
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+
 export interface IHelloWorldProps {
   description: string;
   test: string;
@@ -9,5 +11,5 @@ export interface IHelloWorldProps {
   hasTeamsContext: boolean;
   userDisplayName: string;
   siteName: string;
-  listData: any;
+  context: WebPartContext;
 }

@@ -3,6 +3,7 @@ import styles from './HelloWorld.module.scss';
 import { IHelloWorldProps } from './IHelloWorldProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 import { useState, useEffect } from 'react';
+import { getSP } from '../pnpjsConfig';
 
 export const HelloWorld = (props: IHelloWorldProps): JSX.Element => {
   const {
@@ -16,17 +17,18 @@ export const HelloWorld = (props: IHelloWorldProps): JSX.Element => {
     hasTeamsContext,
     userDisplayName,
     siteName,
-    listData
+    context
   } = props;
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = async (): Promise<void> => {
-      const data = await listData;
-      setData(data);
+      const listData = await getSP(context).web.lists.filter("Hidden eq false").select("Title", "ID")();
+      console.log(38, listData);
+      setData(listData);
     };
-    getData().then(res => console.log("q")).catch(err => console.log("err"));
+    getData().then(res => console.log("success")).catch(err => console.log("err"));
 
     // (async () => {
     //   const data = await listData;

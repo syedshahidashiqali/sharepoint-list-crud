@@ -65,9 +65,7 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
         siteName: this.context.pageContext.web.title,
-        // listData: this._getListData().then(response => response.value).catch(() => { })
         listData: _listData
-        // listData: this._renderListAsync()
       }
     );
 

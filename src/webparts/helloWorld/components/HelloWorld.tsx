@@ -59,7 +59,7 @@ export const HelloWorld = (props: IHelloWorldProps): JSX.Element => {
           <div key={index}>{item?.Title}</div>
         ))}
       </div>
-    </section >
+    </section>
   );
 };
 

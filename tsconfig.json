@@ -14,7 +14,6 @@
     "inlineSources": false,
     "strictNullChecks": false,
     "noImplicitAny": true,
-
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@microsoft"
@@ -23,7 +22,7 @@
       "webpack-env"
     ],
     "lib": [
-      "es5",
+      "ES2015",
       "dom",
       "es2015.collection",
       "es2015.promise"

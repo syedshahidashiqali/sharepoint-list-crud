@@ -9,4 +9,5 @@ export interface IHelloWorldProps {
   hasTeamsContext: boolean;
   userDisplayName: string;
   siteName: string;
+  listData: any;
 }

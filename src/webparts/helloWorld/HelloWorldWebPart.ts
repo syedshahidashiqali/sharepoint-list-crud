@@ -12,6 +12,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'HelloWorldWebPartStrings';
+import { SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
 import HelloWorld from './components/HelloWorld';
 import { IHelloWorldProps } from './components/IHelloWorldProps';
 
@@ -21,14 +22,36 @@ export interface IHelloWorldWebPartProps {
   test1: boolean;
   test2: string;
   test3: boolean;
+  listData: any;
+}
+
+export interface ISPLists {
+  value: ISPList[];
+}
+
+export interface ISPList {
+  Title: string;
+  Id: string;
 }
 
 export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
+
+  private _getListData(): Promise<ISPLists> {
+    return this.context.spHttpClient.get(`${this.context.pageContext.web.absoluteUrl}/_api/web/lists?$filter=Hidden eq false`, SPHttpClient.configurations.v1)
+      .then((response: SPHttpClientResponse) => {
+        return response.json();
+      })
+      .catch((err) => console.log(err));
+  }
 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
   public render(): void {
+    const _listData: Promise<any> = this._getListData()
+      .then(response => response.value)
+      .catch((err) => console.log(err));
+
     const element: React.ReactElement<IHelloWorldProps> = React.createElement(
       HelloWorld,
       {
@@ -41,7 +64,10 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
-        siteName: this.context.pageContext.web.title
+        siteName: this.context.pageContext.web.title,
+        // listData: this._getListData().then(response => response.value).catch(() => { })
+        listData: _listData
+        // listData: this._renderListAsync()
       }
     );
 

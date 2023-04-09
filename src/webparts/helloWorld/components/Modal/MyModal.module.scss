@@ -1,0 +1,24 @@
+.modalContainer {
+  width: 70vw;
+  height: 50vw;
+  padding: 50px;
+
+  & .header {
+    color: black;
+  }
+
+  .closeIcon {
+    background-color: rgb(235, 85, 85);
+    color: #fff;
+    margin-right: 10px;
+  }
+
+  & .heading {
+    color: black;
+
+  }
+
+  & .body {
+    color: black;
+  }
+}

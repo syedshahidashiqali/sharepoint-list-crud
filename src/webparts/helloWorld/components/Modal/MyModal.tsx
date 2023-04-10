@@ -5,7 +5,7 @@ import {
   IIconProps,
 } from '@fluentui/react';
 import { IconButton, DefaultButton } from '@fluentui/react/lib/Button';
-import { MyForm } from '../ListDetails/MyForm';
+import { MyForm } from '../MyForm/MyForm';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import styles from "./MyModal.module.scss";
 import { getSP } from '../../pnpjsConfig';
